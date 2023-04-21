@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>
+        <a href="../index.html"> Назад</a>
+    </h3>
+    <p>
+        Створити клас TBankomat, який моделює роботу банкомата. Клас повинен 
+        містити поля для зберігання кількості купюр кожного із номіналів від 
+        5 до 200 гривень. Реалізувати методи знаходження максимальної та мінімальної 
+        сум, які може видати банкомат, та метод зняття деякої суми.
+    </p>
+
+    <script>
+        class Cash{
+            #value
+            constructor(nominal, value){
+                this.nominal = nominal
+                this.Value = value
+            }
+            get Value(){
+                return this.#value
+            }
+            set Value(value){
+                if(value < 0 || !isFinite(value)) throw new Error('некоректне значення')
+                this.#value = value
+            }
+            toString(){
+                return `${this.nominal} - ${this.Value}`
+            }
+        }
+        class TBankomat {
+            constructor(banknoteList){
+                this.cashList = cashList
+            }
+
+            getMinSum(){
+                for(const cash of this.cashList){
+                    if(cash.Value) return cash.nominal
+                }
+                return 0
+            }
+            getMaxSum(){
+                return this.cashList.reduce((prevSum, cash) => prevSum + cash.nominal * cash.Value, 0)
+            }
+
+            getSomeSum(sum){
+                if(sum < this.getMinSum() || sum > this.getMaxSum() || !isFinite(sum)) throw new Error('некоректне значення')
+                for (let i = this.cashList.length - 1; i >= 0 && sum !== 0; i--){
+                    if(sum / this.cashList[i].rate >= 1) {
+                        this.cashList[i].Value -= Math.floor(sum / this.cashList[i].rate)
+                        sum = sum % this.cashList[i].rate
+                    }
+                }
+            }
+
+            toString(){
+                if (this.getMaxSum() === 0) return 'потрібно більше коштів'
+                return `
+                Мінімальна сума для отримання грошей${this.getMinSum()}<br>
+                Максимальна сума для отримання грошей${this.getMaxSum()}`
+            }
+        }
+
+        let cashList = [new Cash(5, 30), new Cash(50, 15), new Cash(100, 14), new Cash(200, 10), new Cash(500, 2)]
+        let bankomat = new TBankomat(cashList)
+        bankomat.getSomeSum(500)
+        
+        
+    </script>
+</body>
+</html>

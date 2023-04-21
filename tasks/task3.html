@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>
+        <a href="../index.html"> Назад</a>
+    </h3>
+    <p>
+        Задача 3. Об’єкт “Фірма” (використати члени-класи)
+    </p>
+    
+    <script>
+        class DateOfFound {
+            #year
+            #month
+            constructor(yearValue, monthValue){
+                this.Year = yearValue
+                this.Month = monthValue
+            }
+            get Year(){
+                return this.#year
+            }
+            get Month(){
+                return this.#month
+            }
+
+            set Year(value){
+                if(value < 1000) throw new Error
+                this.#year = value 
+            }
+            set Month(value){
+                if(value < 1 || value > 12) throw new Error
+                this.#month = value
+            }
+            toStrung(){
+                retur `month and year of foundation is ${this.Month}.${this.Year}<br>`
+            }
+        }
+
+        class Service {
+            #serviceName
+            #price
+            #termInDays
+
+            constructor(serviceName, price, days){
+                this.ServiceName = serviceName
+                this.Price = price
+                this.TermInDays = days
+            }
+            get ServiceName(){
+                return this.#serviceName
+            }
+            get Price(){
+                return this.#price
+            }
+            get TermInDays(){
+                return this.#termInDays
+            }
+            set ServiceName(name){
+                if(name.length === 0) throw new Error ('empty field')
+                this.#serviceName = name
+            }
+            set Price(value){
+                if (value < 0) throw Error ('Incorect value')
+                this.#price = value
+            }
+            set TermInDays(value){
+                if (value < 0) throw new Error ('Incorect value')
+                this.#termInDays = value
+            }
+            toString(){
+                return `Service: ${this.ServiceName};<br> 
+                Price: ${this.Price};<br> 
+                Term in days: ${this.TermInDays}`
+            }
+        }
+        class Branch {
+            constructor (country, city, street, building){
+                this.Country = country
+                this.City = city
+                this.Street = street
+                this.Building = building
+            }
+            toString(){
+                return `Country: ${this.Country};<br> 
+                City: ${this.City};<br> 
+                Street: ${this.Street};<br> 
+                Building: ${this.Building}`
+            }
+        }
+        class Company {
+            constructor(companyName, dateOfFound, services, branches){
+                this.companyName = companyName
+                this.dateOfFoundation = dateOfFound
+                this.services = services
+                this.branches = branches
+                this.branchesArr = []
+                this.servicesArr = []
+            }
+            get CompaniesAge(){
+                return new Date().getFullYear()-this.dateOfFoundation.Year
+            }
+            set branchesInCity(value){
+                for (let branches of this.branches){
+                    if (branches.City === value){
+                        this.branchesArr.push(branches)
+                    }
+                }
+                return this.branchesArr
+            }
+            set servicesWithConditions(conditions){
+                for(let service of this.services){
+                    console.log(service);
+                    if (service.Price <= conditions[0] && service.TermInDays <= conditions[1]){
+                        this.servicesArr.push(service)
+                    }
+                }
+                return this.servicesArr
+            }
+            toString(){
+                return `Name of company: ${this.companyName};<br>
+                Age of company: ${this.CompaniesAge};<br>
+                Branches in city: ${this.branchesArr};<br>
+                Services with conditions: ${this.servicesArr}<br>`
+            }
+        }
+        let dateOfCompanyFound = new DateOfFound(2000, 2)
+        let companiesServices = [
+            new Service('Wash', 100, 5),
+            new Service('Clean', 200, 1),
+            new Service('Dry', 50, 6)
+        ]
+        let companiesBranches = [
+            new Branch('Ukraine', 'Odesa', 'Gonty', 100),
+            new Branch('Ukraine', 'Dnipro', 'L.Ukrainku', 20),
+            new Branch('Ukraine', 'Kharkiv', 'Franka', 50),
+            new Branch('Ukraine', 'Kyiv', 'Nebesnoi Sotni', 100),
+        ]
+        let companyInformation = new Company('Aplle', dateOfCompanyFound, companiesServices, companiesBranches)
+        companyInformation.branchesInCity = 'Kyiv'
+        companyInformation.servicesWithConditions = [110, 6]
+        document.write(companyInformation)
+
+    </script>
+</body>
+</html>

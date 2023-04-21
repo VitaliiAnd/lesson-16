@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>
+        <a href="../index.html"> Назад</a>
+    </h3>
+    <p>
+        Створити клас TMoney для роботи з грошовими сумами. Сума повинна 
+        зберігатися у вигляді доларового еквіваленту. Реалізувати методи
+        додавання/вилучення грошової маси, вказуючи необхідну суму у гривнях,
+        та визначення курсу долара, при якому сума у гривнях збільшиться на 100.
+        Курс долара зберігати в окремому полі. 
+    </p>
+    
+    <script>
+        class TMoney {
+            static #exchangeRate
+            #balance = 0
+
+            constructor(initBalance, initExchangeRate) {
+                this.Balance = initBalance
+                TMoney.ExchengeRate = initExchangeRate
+            }
+            get Balance(){
+                return this.#balance / TMoney.#exchangeRate
+            }
+            static get ExchengeRate(){
+                return TMoney.#exchangeRate
+            }
+            static set ExchengeRate(newValue){
+                if (newValue < 0) throw new Error("incorect Value")
+                TMoney.#exchangeRate = newValue
+            }
+            set Balance(newValue){
+                if (this.#balance + newValue < 0) throw new Error("incorect input value")
+                this.#balance += newValue
+            }
+            newExchangeRate(){
+                let balanceInUa = this.Balance * TMoney.ExchengeRate
+                return ((balanceInUa + 100) * TMoney.ExchengeRate) / balanceInUa
+            }
+            toString(){
+                return `Баланс у доларах: ${this.Balance.toFixed(2)} USD<br>Курс 1usd = ${
+                    TMoney.ExchengeRate
+                } UA<br>Курс долара, при якому сума у гривнях збільшується на 100: ${this.newExchangeRate().toFixed(2)} UA`
+            }
+        }
+        let moneyExchenge = new TMoney(1000, 40)
+        moneyExchenge.Balance = 300
+        let moneyExchenge2 = new TMoney(1000, 40)
+        moneyExchenge2.Balance = 300
+
+        TMoney.ExchengeRate = 30
+
+        document.write(`${moneyExchenge}<br>`)
+        document.write(`${moneyExchenge2}`)
+
+    </script>
+</body>
+</html>
